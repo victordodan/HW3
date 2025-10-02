@@ -1,6 +1,6 @@
 
 /*
- * *** YOUR NAME GOES HERE / YOUR SECTION NUMBER ***
+ * Victor Dodan / 002
  *
  * This java file is a Java object implementing simple AVL Tree.
  * You are to complete the deleteElement method.
@@ -16,12 +16,12 @@ import java.lang.Math;
  *  This class represents an inner node of the AVL Tree. Additional candidate  
  *  attributes can be considered, but if added, they must be maintained during 
  *  tree modifications, including rotations.
- * 
+ *
  *  The values currently maintained in each node include:
  *    - value : This is the value of the node. 
  *    - height: Height of the node in the tree. A node's height is the maximum 
  *              number of edges to its deepest leaf of its two subtrees.
- * 
+ *
  *  Additional candidate values that can be considered (but currently not 
  *  implemented):
  *    - size: # of nodes in a node's subtrees
@@ -30,15 +30,15 @@ import java.lang.Math;
  */
 
 class Node {
-        int value;                      // the node's value
-        int height;                     // height of node based on its [sub]trees
-        Node leftChild, rightChild;     // left and right subtrees
+    int value;                      // the node's value
+    int height;                     // height of node based on its [sub]trees
+    Node leftChild, rightChild;     // left and right subtrees
 
-        public Node(int data) {         // parameterized constructor
-            value = data;
-            height = 0;
-            leftChild = rightChild = null;
-        }
+    public Node(int data) {         // parameterized constructor
+        value = data;
+        height = 0;
+        leftChild = rightChild = null;
+    }
 }
 
 
@@ -121,11 +121,11 @@ class LUC_AVLTree {
 
     private boolean isBST( Node node) {
 
-        if (node == null) 
+        if (node == null)
             return true;
 
         // false if the max value of the left subtree is > than us
-        if ( (node.leftChild != null) && (maxValue(node.leftChild) > node.value) )     
+        if ( (node.leftChild != null) && (maxValue(node.leftChild) > node.value) )
             return false;
 
         // false if the min value of the right subtree is <= than us
@@ -133,7 +133,7 @@ class LUC_AVLTree {
             return false;
 
         // false if, recursively, the left or right is not a BST
-        if ( ( ! isBST(node.leftChild) ) || ( ! isBST(node.rightChild) ) )                     
+        if ( ( ! isBST(node.leftChild) ) || ( ! isBST(node.rightChild) ) )
             return false;
 
         return true;
@@ -145,8 +145,8 @@ class LUC_AVLTree {
      */
 
     private int maxValue(Node node) {
-      
-        if (node == null) 
+
+        if (node == null)
             return  Integer.MIN_VALUE;
 
         int value    = node.value;
@@ -161,8 +161,8 @@ class LUC_AVLTree {
      */
 
     private int minValue(Node node) {
-      
-        if (node == null) 
+
+        if (node == null)
             return Integer.MAX_VALUE;
 
         int value    = node.value;
@@ -205,7 +205,7 @@ class LUC_AVLTree {
      *  recursion, each ancestor's node's balance factor (bf) is re-checked. If
      *  at each ancestor node, the |bf| > 1, the appropriate rotation (LL, LR, 
      *  RR, or RL) is performed in order to bring that node's  |bf| <= 1. 
-     *  
+     *
      *  The only nodes that need to have their bf re-checked are the direct 
      *  ancestor nodes of the newly inserted node, all the way back to the root
      *  node. Any of these nodes may now be out of balanced due to this newly 
@@ -233,16 +233,16 @@ class LUC_AVLTree {
         }
 
         /*
-         * If the inserting 'value' is less than the current node's value, then 
-         * we are inserting to the LEFT of this node, else we are inserting to 
+         * If the inserting 'value' is less than the current node's value, then
+         * we are inserting to the LEFT of this node, else we are inserting to
          * the RIGHT of it.
          *
-         * This AVL tree does not allow duplicates, so do nothing if one is 
-         * found. Normally, we should throw an error indicating the application 
+         * This AVL tree does not allow duplicates, so do nothing if one is
+         * found. Normally, we should throw an error indicating the application
          * tried to insert a duplicate.
          *
-         * Last, note that If a rotation occurred  during an insert in this 
-         * node's subtree, then we need to adjust this node's pointer to the 
+         * Last, note that If a rotation occurred  during an insert in this
+         * node's subtree, then we need to adjust this node's pointer to the
          * new top of that subtree.
          */
         if (value < node.value) {
@@ -279,13 +279,13 @@ class LUC_AVLTree {
             ; // value is duplicate, do nothing.
 
         /*
-         * Re-adjust current node's height, this will also be done for each 
-         * ancestor node (if one exists) as we return through recursion. If 
-         * one or more rotations occurred, then the node's height would have 
-         * changed. Doing so, will re-adjust the height of each ancestor node 
+         * Re-adjust current node's height, this will also be done for each
+         * ancestor node (if one exists) as we return through recursion. If
+         * one or more rotations occurred, then the node's height would have
+         * changed. Doing so, will re-adjust the height of each ancestor node
          * through to the root.
          */
-      
+
         node.height = (getMaxHeight( getHeight(node.leftChild), getHeight(node.rightChild))) + 1;
 
         return node;
@@ -320,14 +320,14 @@ class LUC_AVLTree {
      *
      *  So, scenario 1 from above, we simply remove the leaf node and 
      *  recalculates the heights of each of its ancestors back to the root. 
-     * 
+     *
      *  On scenarios 2 and 3, we simply pull up the appropriate subtree to 
      *  replace the deleted node and recalculate the height for this node and 
      *  each of its ancestors back to the root.
      *
      *  In scenario 4, the routine pulls up (and deletes) the "Inorder 
      *  Successor" node on its right subtree. It will be a leaf node. 
-     * 
+     *
      *  This node (and its ancestors nodes) may need re-balancing; so the bf 
      *  is checked at the end of this routine and if needing re-balancing, it 
      *  invokes the proper rotation (LL, LR, RR, RL).
@@ -342,10 +342,46 @@ class LUC_AVLTree {
      */
 
     private Node deleteElement(int value, Node node) {
+        if(node == null) return null;
 
+        if(node.value != value) {
+            if(node.value > value) node.leftChild = deleteElement(value, node.leftChild);
+            else if (node.value < value) node.rightChild = deleteElement(value, node.rightChild);
+        }
+
+        else if(node.value == value){
+            if(node.leftChild == null && node.rightChild == null){
+                return null;
+            }
+            else if(node.leftChild == null)
+            {
+                return node.rightChild;
+            }
+            else if(node.rightChild == null){
+                return node.leftChild;
+            }
+            else{
+                Node copy = minValueNode(node.rightChild);
+                node.value = copy.value;
+                node.rightChild = deleteElement(copy.value, node.rightChild);
+            }
+
+        }
+
+        node.height = getMaxHeight(getHeight(node.leftChild), getHeight(node.rightChild)) + 1;
+        int bf = getBalanceFactor(node);
+        if(bf > 1){
+            if(getBalanceFactor(node.leftChild) >= 0) return LLRotation(node);
+            else return LRRotation(node);
+        }
+        else if (bf < -1){
+            if(getBalanceFactor(node.rightChild) <= 0) return RRRotation(node);
+            else return RLRotation(node);
+        }
+        return node;
         /*
          * ADD CODE HERE
-         * 
+         *
          * NOTE, that you should use the existing coded private methods
          * in this file, which include:
          *      - minValueNode,
@@ -361,8 +397,6 @@ class LUC_AVLTree {
          * code for each. You can also look at the method InsertElement, as it has do
          * do many of the same things as this method.
          */
-
-        return node;
     }
 
 
